@@ -1,0 +1,2 @@
+client 4 start 16:26:38 ET  duration=180s  timeout=5s
+client 4 end 16:29:38 ET  errors=0
