@@ -12,8 +12,11 @@ APP_DIR="/opt/hw4/service1"
 VENV="/opt/hw4/venv"
 
 echo "[startup] installing system packages"
-apt-get update -y
-apt-get install -y python3-venv
+# Other installers (e.g. the Ops Agent) may be using apt at boot.
+# Wait up to 10 minutes for the package lock instead of failing.
+APT="apt-get -o DPkg::Lock::Timeout=600"
+$APT update -y
+DEBIAN_FRONTEND=noninteractive $APT install -y python3-venv
 
 echo "[startup] copying code from $CODE_SRC"
 mkdir -p "$APP_DIR"
