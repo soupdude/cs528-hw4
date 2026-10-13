@@ -55,4 +55,14 @@ systemctl daemon-reload
 systemctl enable hw4-server
 systemctl restart hw4-server   # restart (not start) so a reboot picks up new code
 
+# Ops Agent: reports memory (and detailed CPU/network) metrics for the stress test.
+# Installed after the server is already running, so it doesn't delay serving.
+if ! dpkg -s google-cloud-ops-agent >/dev/null 2>&1; then
+  echo "[startup] installing Ops Agent"
+  cd /tmp
+  { curl -sSfO https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh \
+      && bash add-google-cloud-ops-agent-repo.sh --also-install; } \
+    || echo "[startup] WARNING: Ops Agent install failed (the server is still running)"
+fi
+
 echo "[startup] done"
